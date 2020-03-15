@@ -38,6 +38,19 @@ func TestUnpack(t *testing.T) {
 			err:      ErrInvalidString,
 		},
 		{
+			input:    "ab12c",
+			expected: "",
+			err:      ErrInvalidString,
+		},
+		{
+			input:    "п4ри2в5іт",
+			expected: "пппприивввввіт",
+		},
+		{
+			input:    "🚀4",
+			expected: "🚀🚀🚀🚀",
+		},
+		{
 			input:    "",
 			expected: "",
 		},
