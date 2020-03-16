@@ -1,4 +1,4 @@
-package hw02_unpack_string //nolint:golint,stylecheck,gomnd
+package hw02_unpack_string //nolint:golint,stylecheck
 
 import (
 	"errors"
@@ -11,11 +11,11 @@ var ErrInvalidString = errors.New("invalid string")
 
 func Unpack(s string) (string, error) {
 	var runeBuf rune
-	var output string
+	var builder strings.Builder
 
 	for _, char := range s {
 		if !unicode.IsDigit(char) {
-			output += string(char)
+			builder.WriteString(string(char))
 			if char == runeBuf {
 				// repeated characters
 				return "", ErrInvalidString
@@ -23,7 +23,7 @@ func Unpack(s string) (string, error) {
 			runeBuf = char
 		} else {
 			count, _ := strconv.Atoi(string(char))
-			output += strings.Repeat(string(runeBuf), count-1)
+			builder.WriteString(strings.Repeat(string(runeBuf), count-1))
 			if runeBuf == 0 || unicode.IsDigit(runeBuf) {
 				// sequential numbers or string starting with number
 				return "", ErrInvalidString
@@ -31,5 +31,5 @@ func Unpack(s string) (string, error) {
 			runeBuf = char // for sequential numbers check
 		}
 	}
-	return output, nil
+	return builder.String(), nil
 }
