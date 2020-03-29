@@ -15,7 +15,7 @@ func Unpack(s string) (string, error) {
 
 	for _, char := range s {
 		if !unicode.IsDigit(char) {
-			builder.WriteString(string(char))
+			builder.WriteRune(char)
 			if char == runeBuf {
 				// repeated characters
 				return "", ErrInvalidString
