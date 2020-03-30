@@ -17,7 +17,7 @@ func Top10(in string) []string {
 	// feed slice into map for counting
 	for _, word := range s1 {
 		count := m[word]
-		m[word] = count + 1
+		m[word] = count + 1 //nolint:gomnd
 	}
 
 	// create new slice out of unique words
@@ -33,7 +33,7 @@ func Top10(in string) []string {
 	top := 10
 	if len(m) <= top {
 		return s2
-	} else {
+	} else { //nolint:golint
 		return s2[:top]
 	}
 }
