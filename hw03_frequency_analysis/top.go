@@ -11,6 +11,10 @@ func Top10(in string) []string {
 	in = regexp.MustCompile(`\t`).ReplaceAllString(in, "")
 	in = regexp.MustCompile(`\s\s+`).ReplaceAllString(in, " ")
 
+	if in == "" {
+		return make([]string, 0)
+	}
+
 	s1 := strings.Split(in, " ")
 	m := make(map[string]int)
 
