@@ -33,7 +33,6 @@ func Top10(in string) []string {
 	top := 10
 	if len(m) <= top {
 		return s2
-	} else { //nolint:golint
-		return s2[:top]
 	}
+	return s2[:top]
 }
