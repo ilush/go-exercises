@@ -6,13 +6,15 @@ import (
 	"strings"
 )
 
+var rx = regexp.MustCompile(`\s\s+`)
+
 func Top10(in string) []string {
-	in = regexp.MustCompile(`\n`).ReplaceAllString(in, " ")
-	in = regexp.MustCompile(`\t`).ReplaceAllString(in, "")
-	in = regexp.MustCompile(`\s\s+`).ReplaceAllString(in, " ")
+	in = strings.ReplaceAll(in, `\n`, " ")
+	in = strings.ReplaceAll(in, `\t`, "")
+	in = rx.ReplaceAllString(in, " ")
 
 	if in == "" {
-		return make([]string, 0)
+		return nil
 	}
 
 	s1 := strings.Split(in, " ")
@@ -20,8 +22,7 @@ func Top10(in string) []string {
 
 	// feed slice into map for counting
 	for _, word := range s1 {
-		count := m[word]
-		m[word] = count + 1 //nolint:gomnd
+		m[word]++
 	}
 
 	// create new slice out of unique words
@@ -34,7 +35,7 @@ func Top10(in string) []string {
 	sort.Slice(s2, func(i, j int) bool { return m[s2[i]] > m[s2[j]] })
 
 	// return slice up to 10 elements
-	top := 10
+	const top = 10
 	if len(m) <= top {
 		return s2
 	}
