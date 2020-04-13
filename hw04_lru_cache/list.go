@@ -1,5 +1,15 @@
 package hw04_lru_cache //nolint:golint,stylecheck
 
+type List interface {
+	Len() int                      // длина списка
+	Front() *Item                  // первый Item
+	Back() *Item                   // последний Item
+	PushFront(v interface{}) *Item // добавить значение в начало
+	PushBack(v interface{}) *Item  // добавить значение в конец
+	Remove(i *Item)                // удалить элемент
+	MoveToFront(i *Item)           // переместить элемент в начало
+}
+
 type Item struct {
 	Next  *Item
 	Prev  *Item
@@ -14,11 +24,16 @@ type list struct {
 }
 
 func (l *list) Init() *list {
+	l.front = nil
+	l.back = nil
 	l.len = 0
 	return l
 }
 
-func NewList() *list { return new(list).Init() } //nolint:golint
+func NewList() List {
+	new(list).Init()
+	return &list{}
+}
 
 func (l *list) Len() int { return l.len }
 
@@ -118,12 +133,11 @@ func (l *list) MoveToFront(i *Item) {
 	n.Next = i
 }
 
-func (l *list) Remove(i *Item) *Item {
+func (l *list) Remove(i *Item) {
 	if i == l.front && i == l.back { // removing last item from list
 		l.front = nil
 		l.back = nil
 		l.len = 0
-		return i
 	}
 	if i.Prev != nil { // l.Back()
 		i.Prev.Next = i.Next
@@ -140,5 +154,4 @@ func (l *list) Remove(i *Item) *Item {
 	i.Prev = nil
 	i.list = nil
 	l.len--
-	return i
 }
