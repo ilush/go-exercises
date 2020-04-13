@@ -1,25 +1,25 @@
 package hw04_lru_cache //nolint:golint,stylecheck
 
 type List interface {
-	Len() int                      // длина списка
-	Front() *Item                  // первый Item
-	Back() *Item                   // последний Item
-	PushFront(v interface{}) *Item // добавить значение в начало
-	PushBack(v interface{}) *Item  // добавить значение в конец
-	Remove(i *Item)                // удалить элемент
-	MoveToFront(i *Item)           // переместить элемент в начало
+	Len() int                          // длина списка
+	Front() *listItem                  // первый listItem
+	Back() *listItem                   // последний listItem
+	PushFront(v interface{}) *listItem // добавить значение в начало
+	PushBack(v interface{}) *listItem  // добавить значение в конец
+	Remove(i *listItem)                // удалить элемент
+	MoveToFront(i *listItem)           // переместить элемент в начало
 }
 
-type Item struct {
-	Next  *Item
-	Prev  *Item
+type listItem struct {
+	Next  *listItem
+	Prev  *listItem
 	Value interface{}
 	list  *list
 }
 
 type list struct {
-	front *Item
-	back  *Item
+	front *listItem
+	back  *listItem
 	len   int
 }
 
@@ -37,22 +37,22 @@ func NewList() List {
 
 func (l *list) Len() int { return l.len }
 
-func (l *list) Front() *Item {
+func (l *list) Front() *listItem {
 	if l.len == 0 {
 		return nil
 	}
 	return l.front
 }
 
-func (l *list) Back() *Item {
+func (l *list) Back() *listItem {
 	if l.len == 0 {
 		return nil
 	}
 	return l.back
 }
 
-func (l *list) PushFront(v interface{}) *Item { //nolint:dupl
-	i := &Item{Value: v}
+func (l *list) PushFront(v interface{}) *listItem { //nolint:dupl
+	i := &listItem{Value: v}
 	f := l.front
 	b := l.back
 	switch {
@@ -61,7 +61,7 @@ func (l *list) PushFront(v interface{}) *Item { //nolint:dupl
 		l.back = i
 		l.len++
 		i.list = l
-	case f.Value != nil && f == b: // push to one item list
+	case f.Value != nil && f == b: // push to front of one-item list
 		i.list = l
 		l.front = i
 		l.front.Prev = f
@@ -81,8 +81,8 @@ func (l *list) PushFront(v interface{}) *Item { //nolint:dupl
 	return i
 }
 
-func (l *list) PushBack(v interface{}) *Item { //nolint:dupl
-	i := &Item{Value: v}
+func (l *list) PushBack(v interface{}) *listItem { //nolint:dupl
+	i := &listItem{Value: v}
 	f := l.front
 	b := l.back
 	switch {
@@ -91,7 +91,7 @@ func (l *list) PushBack(v interface{}) *Item { //nolint:dupl
 		l.back = i
 		l.len++
 		i.list = l
-	case b.Value != nil && f == b: // push to one item list
+	case b.Value != nil && f == b: // push to back of one-item list
 		i.list = l
 		l.front = f
 		l.front.Prev = i
@@ -112,7 +112,7 @@ func (l *list) PushBack(v interface{}) *Item { //nolint:dupl
 	return i
 }
 
-func (l *list) MoveToFront(i *Item) {
+func (l *list) MoveToFront(i *listItem) {
 	if i == l.front {
 		return
 	}
@@ -133,8 +133,8 @@ func (l *list) MoveToFront(i *Item) {
 	n.Next = i
 }
 
-func (l *list) Remove(i *Item) {
-	if i == l.front && i == l.back { // removing last item from list
+func (l *list) Remove(i *listItem) {
+	if i == l.front && i == l.back { // removing last listItem from list
 		l.front = nil
 		l.back = nil
 		l.len = 0
