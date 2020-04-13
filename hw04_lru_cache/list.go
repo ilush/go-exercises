@@ -18,7 +18,7 @@ func (l *list) Init() *list {
 	return l
 }
 
-func NewList() *list { return new(list).Init() }
+func NewList() *list { return new(list).Init() } //nolint:golint
 
 func (l *list) Len() int { return l.len }
 
@@ -36,8 +36,7 @@ func (l *list) Back() *Item {
 	return l.back
 }
 
-func (l *list) PushFront(v interface{}) *Item {
-
+func (l *list) PushFront(v interface{}) *Item { //nolint:dupl
 	i := &Item{Value: v}
 	f := l.front
 	b := l.back
@@ -63,13 +62,11 @@ func (l *list) PushFront(v interface{}) *Item {
 		l.front.Next = nil
 		f.Next = i
 		l.len++
-
 	}
 	return i
 }
 
-func (l *list) PushBack(v interface{}) *Item {
-
+func (l *list) PushBack(v interface{}) *Item { //nolint:dupl
 	i := &Item{Value: v}
 	f := l.front
 	b := l.back
@@ -119,12 +116,9 @@ func (l *list) MoveToFront(i *Item) {
 	i.Prev = n
 	i.Next = nil
 	n.Next = i
-
-	return
 }
 
 func (l *list) Remove(i *Item) *Item {
-
 	if i == l.front && i == l.back { // removing last item from list
 		l.front = nil
 		l.back = nil
